@@ -446,7 +446,7 @@
     #works { position: relative; }
 
     .works-section-header {
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem) 0.2rem;
     }
 
     .works-section-header .section-header {
@@ -861,10 +861,13 @@
     /* ─── About Section ────────────────────────────────────────── */
     #about {
       padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .about-columns {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: clamp(3rem, 6vw, 6rem);
-      align-items: start;
+      align-items: stretch;
     }
 
     .about-left {}
@@ -893,14 +896,19 @@
 
     .about-body p + p { margin-top: 1.2rem; }
 
-    .about-right { padding-top: 1rem; }
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
     .about-block {
-      padding: 2rem 0;
+      padding: 2.5rem 0;
       border-bottom: 1px solid var(--border);
     }
 
-    .about-block:first-child { border-top: 1px solid var(--border); }
+    .about-block:first-child { padding-top: 0; }
+
 
     .about-block-label {
       font-size: 0.6rem;
@@ -1028,7 +1036,6 @@
     /* ─── Contact Section ──────────────────────────────────────── */
     #contact {
       padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-      border-top: 1px solid var(--border);
     }
 
     .contact-inner {
@@ -1160,7 +1167,7 @@
 
     /* ─── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
-      #about { grid-template-columns: 1fr; }
+      .about-columns { grid-template-columns: 1fr; }
       .about-numbers { grid-template-columns: repeat(3, 1fr); }
 
       .process-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
@@ -1556,12 +1563,13 @@
 
   <!-- ── About ──────────────────────────────────────── -->
   <section id="about">
-    <div class="about-left">
-      <div class="section-header reveal">
-        <span class="section-num">02 /</span>
-        <h2 class="section-title-alt">About</h2>
-      </div>
+    <div class="section-header reveal">
+      <span class="section-num">02 /</span>
+      <h2 class="section-title-alt">About</h2>
+    </div>
 
+    <div class="about-columns">
+    <div class="about-left">
       <p class="about-statement reveal reveal-delay-1">
         Design is a <em>conversation</em> between form, function, and the people who experience it.
       </p>
@@ -1637,6 +1645,7 @@
         </div>
       </div>
     </div>
+    </div><!-- /about-columns -->
   </section>
 
   <!-- ── Process ────────────────────────────────────── -->
