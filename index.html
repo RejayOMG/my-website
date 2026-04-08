@@ -978,6 +978,139 @@
       color: var(--text-muted);
     }
 
+    /* ─── Selected Works 2 ────────────────────────────────────── */
+    #about2 {
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid var(--border);
+    }
+
+    .sw2-list {
+      margin-top: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .sw2-item {
+      display: grid;
+      grid-template-columns: 1fr clamp(180px, 32vw, 435px);
+      gap: clamp(2rem, 4vw, 5rem);
+      padding: clamp(1.6rem, 2.5vw, 2.2rem) 0;
+      border-top: 1px solid var(--border);
+      opacity: 0.16;
+      transition: opacity 0.6s var(--ease-out);
+      cursor: pointer;
+      align-items: center;
+    }
+
+    .sw2-item:first-child { border-top: none; }
+    .sw2-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .sw2-item.active { opacity: 1; }
+
+    .sw2-tags {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .sw2-tag {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(242,237,230,0.1);
+      padding: 0.28rem 0.6rem;
+      border-radius: 2px;
+      transition: color 0.4s ease, border-color 0.4s ease;
+    }
+
+    .sw2-item.active .sw2-tag {
+      color: var(--gold);
+      border-color: rgba(201,169,110,0.28);
+    }
+
+    .sw2-year {
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-left: auto;
+    }
+
+    .sw2-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: clamp(0.6rem, 1.2vw, 1rem);
+    }
+
+    .sw2-desc {
+      font-size: clamp(0.78rem, 0.95vw, 0.88rem);
+      color: var(--text-muted);
+      line-height: 1.68;
+      max-width: 52ch;
+      margin-bottom: clamp(1rem, 1.8vw, 1.4rem);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .sw2-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text);
+      position: relative;
+      padding-bottom: 0.2rem;
+    }
+
+    .sw2-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.45s var(--ease-out);
+    }
+
+    .sw2-item.active .sw2-link::after { width: 100%; }
+
+    /* Right: inline image per item */
+    .sw2-image-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      transform: scale(0.88);
+      transform-origin: center right;
+      transition: transform 0.75s var(--ease-out);
+    }
+
+    .sw2-item.active .sw2-image-wrap { transform: scale(1); }
+
+    .sw2-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.12);
+      filter: brightness(0.5) saturate(0.7);
+      transition: transform 0.85s var(--ease-out), filter 0.7s ease;
+    }
+
+    .sw2-item.active .sw2-image-wrap img {
+      transform: scale(1);
+      filter: brightness(0.92) saturate(1);
+    }
+
     /* ─── Process Section ──────────────────────────────────────── */
     #process {
       padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
@@ -1561,6 +1694,98 @@
 
   </section>
 
+  <!-- ── Selected Works 2 ─────────────────────────────── -->
+  <section id="about2">
+    <div class="section-header reveal">
+      <span class="section-num">— /</span>
+      <h2 class="section-title">Selected <em>Works 2</em></h2>
+    </div>
+
+    <div class="sw2-list">
+
+      <div class="sw2-item active">
+        <div class="sw2-text">
+          <div class="sw2-tags">
+            <span class="sw2-tag">Web Design</span>
+            <span class="sw2-tag">E-Commerce</span>
+            <span class="sw2-year">2024 — 25</span>
+          </div>
+          <h3 class="sw2-title">Maami Home</h3>
+          <p class="sw2-desc">A full digital presence for a premium home furniture brand. Photography direction, editorial layouts and e-commerce flows shaped around material honesty and warmth.</p>
+          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+        </div>
+        <div class="sw2-image-wrap">
+          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=80" alt="Maami Home" />
+        </div>
+      </div>
+
+      <div class="sw2-item">
+        <div class="sw2-text">
+          <div class="sw2-tags">
+            <span class="sw2-tag">Brand Identity</span>
+            <span class="sw2-tag">Strategy</span>
+            <span class="sw2-year">2025</span>
+          </div>
+          <h3 class="sw2-title">Aduela</h3>
+          <p class="sw2-desc">Identity and digital strategy for a boutique hospitality group in Porto. A visual language rooted in texture, ritual, and the warmth of the Portuguese coastline.</p>
+          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+        </div>
+        <div class="sw2-image-wrap">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80" alt="Aduela" />
+        </div>
+      </div>
+
+      <div class="sw2-item">
+        <div class="sw2-text">
+          <div class="sw2-tags">
+            <span class="sw2-tag">Motion</span>
+            <span class="sw2-tag">Web Design</span>
+            <span class="sw2-year">2024</span>
+          </div>
+          <h3 class="sw2-title">One Credit</h3>
+          <p class="sw2-desc">Motion design and web presence for a fintech startup redefining personal finance. Clean, confident, and built for trust at every touchpoint.</p>
+          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+        </div>
+        <div class="sw2-image-wrap">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80" alt="One Credit" />
+        </div>
+      </div>
+
+      <div class="sw2-item">
+        <div class="sw2-text">
+          <div class="sw2-tags">
+            <span class="sw2-tag">Art Direction</span>
+            <span class="sw2-tag">Photography</span>
+            <span class="sw2-year">2023</span>
+          </div>
+          <h3 class="sw2-title">Forma Studio</h3>
+          <p class="sw2-desc">Art direction and photography strategy for a design-forward architecture studio. Editorial, precise, and unapologetically minimal at every scale.</p>
+          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+        </div>
+        <div class="sw2-image-wrap">
+          <img src="https://images.unsplash.com/photo-1497366858526-0766728f6d14?auto=format&fit=crop&w=900&q=80" alt="Forma Studio" />
+        </div>
+      </div>
+
+      <div class="sw2-item">
+        <div class="sw2-text">
+          <div class="sw2-tags">
+            <span class="sw2-tag">Brand Identity</span>
+            <span class="sw2-tag">Print</span>
+            <span class="sw2-year">2023</span>
+          </div>
+          <h3 class="sw2-title">Nomad</h3>
+          <p class="sw2-desc">Complete brand identity for a sustainable fashion label — from naming and visual identity to packaging, art direction, and lookbook design.</p>
+          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+        </div>
+        <div class="sw2-image-wrap">
+          <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?auto=format&fit=crop&w=900&q=80" alt="Nomad" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ── About ──────────────────────────────────────── -->
   <section id="about">
     <div class="section-header reveal">
@@ -1935,6 +2160,49 @@
           document.getElementById('cursorRing')?.classList.remove('hovering');
         });
       });
+    })();
+
+    // ── Selected Works 2 Interaction ─────────────────────────────
+    (function() {
+      const section = document.getElementById('about2');
+      if (!section) return;
+
+      const items = Array.from(section.querySelectorAll('.sw2-item'));
+      let activeIdx = 0;
+      let isHovering = false;
+
+      function setActive(idx) {
+        activeIdx = idx;
+        items.forEach((el, i) => el.classList.toggle('active', i === idx));
+      }
+
+      // Hover: instantly activate hovered row + its inline image
+      items.forEach((item, i) => {
+        item.addEventListener('mouseenter', () => {
+          isHovering = true;
+          setActive(i);
+          document.getElementById('cursor')?.classList.add('hovering');
+          document.getElementById('cursorRing')?.classList.add('hovering');
+        });
+        item.addEventListener('mouseleave', () => {
+          isHovering = false;
+          document.getElementById('cursor')?.classList.remove('hovering');
+          document.getElementById('cursorRing')?.classList.remove('hovering');
+        });
+      });
+
+      // Scroll: activate item entering viewport
+      const obs = new IntersectionObserver(entries => {
+        if (isHovering) return;
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const i = items.indexOf(entry.target);
+            if (i !== -1) setActive(i);
+          }
+        });
+      }, { threshold: 0.4, rootMargin: '-20% 0px -20% 0px' });
+
+      items.forEach(item => obs.observe(item));
     })();
 
     </script>
