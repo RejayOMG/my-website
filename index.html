@@ -2222,10 +2222,11 @@
       const ctx = canvas.getContext('2d');
       let W, H;
       let mouseX = -9999, mouseY = -9999;
-      const PARTICLE_COUNT = 60;
-      const CONNECT_DIST = 140;
-      const MOUSE_RADIUS = 160;
+      const PARTICLE_COUNT = 100;
+      const CONNECT_DIST = 130;
+      const MOUSE_RADIUS = 180;
       const particles = [];
+      let time = 0;
 
       function resize() {
         const hero = canvas.parentElement;
@@ -2237,10 +2238,12 @@
         return {
           x: Math.random() * W,
           y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          r: Math.random() * 1.5 + 0.5,
-          alpha: Math.random() * 0.5 + 0.2
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.8 + 0.5,
+          baseAlpha: Math.random() * 0.5 + 0.25,
+          pulseSpeed: Math.random() * 0.02 + 0.008,
+          pulseOffset: Math.random() * Math.PI * 2
         };
       }
 
@@ -2252,6 +2255,7 @@
 
       function draw() {
         ctx.clearRect(0, 0, W, H);
+        time++;
 
         // Update & draw particles
         for (let i = 0; i < particles.length; i++) {
@@ -2262,7 +2266,7 @@
           const dy = p.y - mouseY;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < MOUSE_RADIUS && dist > 0) {
-            const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.8;
+            const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.9;
             p.vx += (dx / dist) * force;
             p.vy += (dy / dist) * force;
           }
@@ -2280,10 +2284,22 @@
           if (p.y < 0) p.y = H;
           if (p.y > H) p.y = 0;
 
+          // Twinkle: each particle pulses its own alpha
+          const pulse = Math.sin(time * p.pulseSpeed + p.pulseOffset);
+          const alpha = p.baseAlpha + pulse * 0.2;
+
+          // Draw glow for brighter particles
+          if (p.r > 1.4) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201,169,110,' + (alpha * 0.08) + ')';
+            ctx.fill();
+          }
+
           // Draw dot
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(201,169,110,' + p.alpha + ')';
+          ctx.fillStyle = 'rgba(201,169,110,' + alpha + ')';
           ctx.fill();
         }
 
@@ -2295,7 +2311,7 @@
             const dy = a.y - b.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < CONNECT_DIST) {
-              const opacity = (1 - dist / CONNECT_DIST) * 0.12;
+              const opacity = (1 - dist / CONNECT_DIST) * 0.15;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
               ctx.lineTo(b.x, b.y);
