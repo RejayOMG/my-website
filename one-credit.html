@@ -159,48 +159,48 @@
 
     /* ── Hero ───────────────────────────────────────────── */
     .hero {
-      padding: calc(68px + clamp(4rem, 8vh, 7rem)) var(--pad) clamp(4rem, 8vh, 7rem);
+      padding: calc(68px + clamp(5rem, 10vh, 9rem)) var(--pad) clamp(5rem, 10vh, 9rem);
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(3rem, 6vw, 7rem);
+      grid-template-columns: 1.1fr 1fr;
+      gap: clamp(3rem, 7vw, 8rem);
       align-items: center;
       max-width: 1400px;
       margin: 0 auto;
     }
 
     .hero-eyebrow {
-      font-size: 0.65rem;
-      letter-spacing: 0.22em;
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--text-dim);
-      margin-bottom: 1rem;
+      margin-bottom: 1.4rem;
     }
 
     .hero-title {
       font-family: var(--serif);
-      font-size: clamp(2.8rem, 5vw, 5rem);
-      font-weight: 400;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.2rem;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.4rem;
     }
 
     .hero-subtitle {
       font-family: var(--serif);
-      font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+      font-size: clamp(1.1rem, 1.8vw, 1.45rem);
       font-weight: 400;
       font-style: italic;
       color: var(--accent);
-      line-height: 1.4;
-      margin-bottom: 1.8rem;
+      line-height: 1.45;
+      margin-bottom: 2rem;
     }
 
     .hero-desc {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
-      line-height: 1.75;
-      max-width: 46ch;
-      margin-bottom: 2.4rem;
+      line-height: 1.8;
+      max-width: 44ch;
+      margin-bottom: 2.6rem;
     }
 
     .hero-links {
@@ -224,27 +224,52 @@
 
     .hero-media {
       position: relative;
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
-      background: #E2DFD8;
+      background: #E8E5DE;
       aspect-ratio: 4/3;
-      box-shadow: 0 24px 64px rgba(26,25,23,0.10);
+      box-shadow: 0 32px 80px rgba(26,25,23,0.12), 0 2px 8px rgba(26,25,23,0.06);
+      border: 1px solid rgba(26,25,23,0.06);
+    }
+
+    .hero-media::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 28px;
+      background: #F0EDE7;
+      border-bottom: 1px solid rgba(26,25,23,0.06);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-media::after {
+      content: '';
+      position: absolute;
+      top: 9px; left: 12px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #D4D0C8;
+      box-shadow: 14px 0 0 #D4D0C8, 28px 0 0 #D4D0C8;
+      z-index: 2;
     }
 
     .hero-media img {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 28px);
+      margin-top: 28px;
       object-fit: cover;
-      transition: transform 6s ease;
+      transition: transform 5s ease;
     }
     .hero-media:hover img { transform: scale(1.03); }
 
     /* ── 2-col Section ──────────────────────────────────── */
     .section-2col {
-      padding: clamp(4rem, 8vh, 8rem) var(--pad);
+      padding: clamp(5rem, 10vh, 10rem) var(--pad);
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: clamp(2rem, 5vw, 6rem);
+      gap: clamp(3rem, 6vw, 7rem);
       align-items: center;
       max-width: 1400px;
       margin: 0 auto;
@@ -267,19 +292,19 @@
 
     .section-heading {
       font-family: var(--serif);
-      font-size: clamp(1.6rem, 3vw, 2.6rem);
-      font-weight: 400;
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 300;
       line-height: 1.15;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.4rem;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.6rem;
     }
 
     .section-body {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
-      line-height: 1.8;
-      max-width: 52ch;
-      margin-bottom: 1.8rem;
+      line-height: 1.85;
+      max-width: 48ch;
+      margin-bottom: 2rem;
     }
 
     .section-link {
@@ -298,11 +323,12 @@
 
     /* ── Media Blocks ───────────────────────────────────── */
     .media-card {
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
-      background: #E2DFD8;
-      box-shadow: 0 16px 48px rgba(26,25,23,0.08);
+      background: #E8E5DE;
+      box-shadow: 0 20px 60px rgba(26,25,23,0.10), 0 2px 8px rgba(26,25,23,0.04);
       position: relative;
+      border: 1px solid rgba(26,25,23,0.04);
     }
 
     .media-card img {
@@ -329,30 +355,31 @@
 
     /* ── Brand Mark Block ───────────────────────────────── */
     .brand-mark {
-      background: #3557A7;
-      border-radius: 4px;
+      background: linear-gradient(145deg, #3D5DB8, #2E4A8F);
+      border-radius: 8px;
       aspect-ratio: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 24px 64px rgba(26,25,23,0.14);
+      box-shadow: 0 32px 80px rgba(53,87,167,0.25), 0 4px 16px rgba(26,25,23,0.08);
     }
 
     .brand-mark svg {
-      width: 40%;
-      height: 40%;
+      width: 38%;
+      height: 38%;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
     }
 
     /* ── Full-width Banner ──────────────────────────────── */
     .banner {
       position: relative;
       overflow: hidden;
-      height: clamp(320px, 50vw, 600px);
+      height: clamp(360px, 55vw, 650px);
     }
 
     .banner img {
       width: 100%;
-      height: 115%;
+      height: 120%;
       object-fit: cover;
       display: block;
       will-change: transform;
@@ -361,41 +388,44 @@
     .banner-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(26,25,23,0.35);
+      background: linear-gradient(135deg, rgba(59,119,107,0.75) 0%, rgba(26,25,23,0.5) 100%);
       display: flex;
       align-items: center;
+      justify-content: center;
       padding: var(--pad);
     }
 
     .banner-text {
       font-family: var(--serif);
-      font-size: clamp(1.8rem, 4vw, 4rem);
-      font-weight: 400;
+      font-size: clamp(2rem, 4.5vw, 4.2rem);
+      font-weight: 300;
       font-style: italic;
       color: #fff;
-      max-width: 18ch;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
+      max-width: 20ch;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      text-align: center;
     }
 
     /* ── Pattern Block ──────────────────────────────────── */
     .pattern-block {
-      background: #3557A7;
-      border-radius: 4px;
-      padding: 3rem;
+      background: linear-gradient(145deg, #3D5DB8, #2E4A8F);
+      border-radius: 8px;
+      padding: clamp(2rem, 3vw, 3.5rem);
       overflow: hidden;
       position: relative;
-      min-height: 320px;
+      min-height: 360px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 0.6rem;
+      gap: 0.5rem;
       align-content: center;
+      box-shadow: 0 32px 80px rgba(53,87,167,0.2);
     }
 
     .pattern-tile {
       aspect-ratio: 1;
-      background: rgba(255,255,255,0.12);
-      border-radius: 2px;
+      background: rgba(255,255,255,0.10);
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -411,9 +441,10 @@
     /* ── Guidelines Block ───────────────────────────────── */
     .guidelines-doc {
       background: #fff;
-      border-radius: 4px;
-      box-shadow: 0 16px 48px rgba(26,25,23,0.10);
+      border-radius: 8px;
+      box-shadow: 0 24px 64px rgba(26,25,23,0.10), 0 2px 8px rgba(26,25,23,0.04);
       overflow: hidden;
+      border: 1px solid rgba(26,25,23,0.05);
     }
 
     .doc-header {
@@ -489,20 +520,20 @@
 
     /* ── Closing Quote ──────────────────────────────────── */
     .closing {
-      padding: clamp(6rem, 12vh, 12rem) var(--pad);
+      padding: clamp(7rem, 14vh, 14rem) var(--pad);
       max-width: 1400px;
       margin: 0 auto;
     }
 
     .closing-quote {
       font-family: var(--serif);
-      font-size: clamp(1.8rem, 4vw, 4rem);
+      font-size: clamp(2rem, 4.5vw, 4.2rem);
       font-weight: 300;
       font-style: italic;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
       color: var(--text);
-      max-width: 26ch;
+      max-width: 22ch;
     }
 
     /* ── Footer ─────────────────────────────────────────── */
