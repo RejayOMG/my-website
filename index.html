@@ -1712,7 +1712,7 @@
           </div>
           <h3 class="sw2-title">Maami Home</h3>
           <p class="sw2-desc">A full digital presence for a premium home furniture brand. Photography direction, editorial layouts and e-commerce flows shaped around material honesty and warmth.</p>
-          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+          <a href="maami-home.html" class="sw2-link">View Case Study <span>→</span></a>
         </div>
         <div class="sw2-image-wrap">
           <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=80" alt="Maami Home" />
@@ -1728,7 +1728,7 @@
           </div>
           <h3 class="sw2-title">Aduela</h3>
           <p class="sw2-desc">Identity and digital strategy for a boutique hospitality group in Porto. A visual language rooted in texture, ritual, and the warmth of the Portuguese coastline.</p>
-          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+          <a href="aduela.html" class="sw2-link">View Case Study <span>→</span></a>
         </div>
         <div class="sw2-image-wrap">
           <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80" alt="Aduela" />
@@ -1760,7 +1760,7 @@
           </div>
           <h3 class="sw2-title">Forma Studio</h3>
           <p class="sw2-desc">Art direction and photography strategy for a design-forward architecture studio. Editorial, precise, and unapologetically minimal at every scale.</p>
-          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+          <a href="forma-studio.html" class="sw2-link">View Case Study <span>→</span></a>
         </div>
         <div class="sw2-image-wrap">
           <img src="https://images.unsplash.com/photo-1497366858526-0766728f6d14?auto=format&fit=crop&w=900&q=80" alt="Forma Studio" />
@@ -1776,7 +1776,7 @@
           </div>
           <h3 class="sw2-title">Nomad</h3>
           <p class="sw2-desc">Complete brand identity for a sustainable fashion label — from naming and visual identity to packaging, art direction, and lookbook design.</p>
-          <a href="#" class="sw2-link">View Case Study <span>→</span></a>
+          <a href="nomad.html" class="sw2-link">View Case Study <span>→</span></a>
         </div>
         <div class="sw2-image-wrap">
           <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?auto=format&fit=crop&w=900&q=80" alt="Nomad" />
@@ -2188,6 +2188,12 @@
           isHovering = false;
           document.getElementById('cursor')?.classList.remove('hovering');
           document.getElementById('cursorRing')?.classList.remove('hovering');
+        });
+        // Click anywhere on the row to navigate
+        item.addEventListener('click', (e) => {
+          if (e.target.closest('a')) return;
+          const link = item.querySelector('.sw2-link');
+          if (link) link.click();
         });
       });
 

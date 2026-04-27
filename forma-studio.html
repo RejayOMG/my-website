@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forma Studio — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #F4F2EE;
+      --bg-section: #ECEAE5;
+      --text:       #1A1917;
+      --text-muted: #7A746D;
+      --text-dim:   #B0AAA3;
+      --accent:     #4A5568;
+      --gold:       #C9A96E;
+      --border:     rgba(26,25,23,0.10);
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'DM Sans', system-ui, sans-serif;
+      --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+      --pad:        clamp(1.5rem, 5vw, 5rem);
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.65;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* ── Cursor ─────────────────────────────────────────── */
+    .cursor {
+      position: fixed;
+      width: 9px; height: 9px;
+      background: var(--text);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .3s var(--ease-out), height .3s var(--ease-out), opacity .3s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(26,25,23,0.25);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width .4s var(--ease-out), height .4s var(--ease-out), border-color .3s;
+    }
+    .cursor.hovering { width: 5px; height: 5px; }
+    .cursor-ring.hovering { width: 52px; height: 52px; border-color: var(--accent); }
+
+    /* ── Page Transition ────────────────────────────────── */
+    .page-cover {
+      position: fixed;
+      inset: 0;
+      background: var(--text);
+      z-index: 8000;
+      transform-origin: bottom;
+      animation: coverReveal 0.9s var(--ease-out) forwards;
+    }
+    @keyframes coverReveal {
+      0%   { transform: scaleY(1); }
+      100% { transform: scaleY(0); }
+    }
+
+    /* ── Scroll Progress ────────────────────────────────── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 1000;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Nav ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 800;
+      height: 68px;
+      padding: 0 var(--pad);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(244,242,238,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--text); }
+    .nav-back svg { transition: transform 0.3s var(--ease-out); }
+    .nav-back:hover svg { transform: translateX(-4px); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.4rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Reveal Animations ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    .reveal-img {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 0.9s var(--ease-out);
+    }
+    .reveal-img.visible { clip-path: inset(0% 0 0 0); }
+
+    /* ── Hero ───────────────────────────────────────────── */
+    .hero {
+      padding: calc(68px + clamp(5rem, 10vh, 9rem)) var(--pad) clamp(5rem, 10vh, 9rem);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: clamp(3rem, 7vw, 8rem);
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-subtitle {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1.45;
+      margin-bottom: 2rem;
+    }
+
+    .hero-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 44ch;
+      margin-bottom: 2.6rem;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-link {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      border-bottom: 1px solid var(--text);
+      padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .hero-link:hover { color: var(--accent); border-color: var(--accent); }
+    .hero-link.muted { color: var(--text-muted); border-color: var(--border); }
+    .hero-link.muted:hover { color: var(--accent); border-color: var(--accent); }
+
+    .hero-media {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #E8E5DE;
+      aspect-ratio: 4/3;
+      box-shadow: 0 32px 80px rgba(26,25,23,0.12), 0 2px 8px rgba(26,25,23,0.06);
+      border: 1px solid rgba(26,25,23,0.06);
+    }
+
+    .hero-media::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 28px;
+      background: #F0EDE7;
+      border-bottom: 1px solid rgba(26,25,23,0.06);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-media::after {
+      content: '';
+      position: absolute;
+      top: 9px; left: 12px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #D4D0C8;
+      box-shadow: 14px 0 0 #D4D0C8, 28px 0 0 #D4D0C8;
+      z-index: 2;
+    }
+
+    .hero-media img {
+      width: 100%;
+      height: calc(100% - 28px);
+      margin-top: 28px;
+      object-fit: cover;
+      transition: transform 5s ease;
+    }
+    .hero-media:hover img { transform: scale(1.03); }
+
+    /* ── 2-col Section ──────────────────────────────────── */
+    .section-2col {
+      padding: clamp(5rem, 10vh, 10rem) var(--pad);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-2col.reverse { direction: rtl; }
+    .section-2col.reverse > * { direction: ltr; }
+
+    .section-wrap {
+      background: var(--bg-section);
+    }
+
+    .section-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.9rem;
+    }
+
+    .section-heading {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.6rem;
+    }
+
+    .section-body {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      max-width: 48ch;
+      margin-bottom: 2rem;
+    }
+
+    .section-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: gap 0.3s var(--ease-out), color 0.3s, border-color 0.3s;
+    }
+    .section-link:hover { gap: 0.9rem; color: var(--accent); border-color: var(--accent); }
+
+    /* ── Media Blocks ───────────────────────────────────── */
+    .media-card {
+      border-radius: 6px;
+      overflow: hidden;
+      background: #E8E5DE;
+      box-shadow: 0 20px 60px rgba(26,25,23,0.10), 0 2px 8px rgba(26,25,23,0.04);
+      position: relative;
+      border: 1px solid rgba(26,25,23,0.04);
+    }
+
+    .media-card img {
+      width: 100%;
+      display: block;
+      transition: transform 0.8s var(--ease-out);
+    }
+    .media-card:hover img { transform: scale(1.03); }
+
+    .media-card.square { aspect-ratio: 1; }
+    .media-card.tall { aspect-ratio: 3/4; }
+    .media-card.wide { aspect-ratio: 16/10; }
+
+    .media-card .caption {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── Brand Mark Block ───────────────────────────────── */
+    .brand-mark {
+      background: linear-gradient(145deg, #606D80, #3D4A5C);
+      border-radius: 8px;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 32px 80px rgba(74,85,104,0.25), 0 4px 16px rgba(26,25,23,0.08);
+    }
+
+    .brand-mark svg {
+      width: 38%;
+      height: 38%;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    }
+
+    /* ── Full-width Banner ──────────────────────────────── */
+    .banner {
+      position: relative;
+      overflow: hidden;
+      height: clamp(360px, 55vw, 650px);
+    }
+
+    .banner img {
+      width: 100%;
+      height: 120%;
+      object-fit: cover;
+      display: block;
+      will-change: transform;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(59,119,107,0.75) 0%, rgba(26,25,23,0.5) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--pad);
+    }
+
+    .banner-text {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 4.2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: #fff;
+      max-width: 20ch;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    /* ── Pattern Block ──────────────────────────────────── */
+    .pattern-block {
+      background: linear-gradient(145deg, #606D80, #3D4A5C);
+      border-radius: 8px;
+      padding: clamp(2rem, 3vw, 3.5rem);
+      overflow: hidden;
+      position: relative;
+      min-height: 360px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      align-content: center;
+      box-shadow: 0 32px 80px rgba(74,85,104,0.2);
+    }
+
+    .pattern-tile {
+      aspect-ratio: 1;
+      background: rgba(255,255,255,0.10);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pattern-tile.light { background: rgba(255,255,255,0.85); }
+
+    .pattern-tile svg {
+      width: 55%;
+      height: 55%;
+    }
+
+    /* ── Guidelines Block ───────────────────────────────── */
+    .guidelines-doc {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 24px 64px rgba(26,25,23,0.10), 0 2px 8px rgba(26,25,23,0.04);
+      overflow: hidden;
+      border: 1px solid rgba(26,25,23,0.05);
+    }
+
+    .doc-header {
+      background: #F0EEE9;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-header-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .doc-header-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .doc-body {
+      padding: 2rem;
+    }
+
+    .doc-row {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .doc-swatch {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .doc-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .doc-typo-row {
+      padding: 1rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .doc-typo-name {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .doc-typo-sample {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .doc-typo-sample.sans {
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    /* ── Closing Quote ──────────────────────────────────── */
+    .closing {
+      padding: clamp(7rem, 14vh, 14rem) var(--pad);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .closing-quote {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 4.2rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      max-width: 22ch;
+    }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem var(--pad);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .footer-tools {
+      display: flex;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-tool {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .footer-tool:hover { color: var(--text); }
+
+    .footer-next {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      transition: color 0.3s var(--ease-out);
+    }
+    .footer-next:hover { color: var(--text); }
+    .footer-next span {
+      display: inline-block;
+      transition: transform 0.3s var(--ease-out);
+    }
+    .footer-next:hover span { transform: translateX(5px); }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .section-2col { grid-template-columns: 1fr; }
+      .section-2col.reverse { direction: ltr; }
+      .pattern-block { grid-template-columns: repeat(4,1fr); padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-cover"></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ── Nav ─────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2">
+        <line x1="14" y1="5" x2="2" y2="5"/>
+        <polyline points="6,1 2,5 6,9"/>
+      </svg>
+      Back
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#works">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section>
+    <div class="hero">
+      <div>
+        <div class="hero-eyebrow reveal">Art Direction · Photography · 2023</div>
+        <h1 class="hero-title reveal reveal-delay-1">Forma Studio</h1>
+        <p class="hero-subtitle reveal reveal-delay-2">Art direction and photography strategy for a design-forward architecture studio.</p>
+        <p class="hero-desc reveal reveal-delay-3">Forma Studio is an architecture and interiors practice with an uncompromising eye. They needed a visual language to match — editorial, precise, and unapologetically minimal. I shaped their photography strategy, campaign art direction, and the visual system that defines how they present their work.</p>
+        <div class="hero-links reveal reveal-delay-4">
+          <a href="#" class="hero-link">Explore the site →</a>
+          <a href="#" class="hero-link muted">View brand guidelines →</a>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="hero-media">
+          <img
+            src="https://images.unsplash.com/photo-1497366858526-0766728f6d14?auto=format&fit=crop&w=1200&q=80"
+            alt="Forma Studio — architecture art direction" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Outdoor / OOH ────────────────────────────────────── -->
+  <div class="section-wrap">
+    <div class="section-2col">
+      <div class="reveal-img">
+        <div class="media-card wide">
+          <img
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80"
+            alt="Forma Studio — campaign photography" />
+          <span class="caption">Campaign Photography · Forma Studio, 2023</span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="media-card" style="aspect-ratio:9/16; max-width:260px; margin:0 auto;">
+          <img
+            src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80"
+            alt="Forma Studio — interior detail" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Brand Strategy ───────────────────────────────────── -->
+  <div class="section-2col" style="max-width:1400px; margin:0 auto; padding: clamp(4rem,8vh,8rem) var(--pad);">
+    <div class="reveal">
+      <div class="brand-mark">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="25" y="25" width="50" height="50" stroke="white" stroke-width="3" fill="none" opacity="0.9"/>
+          <line x1="50" y1="25" x2="50" y2="75" stroke="white" stroke-width="2" opacity="0.6"/>
+          <line x1="25" y1="50" x2="75" y2="50" stroke="white" stroke-width="2" opacity="0.6"/>
+          <rect x="38" y="38" width="24" height="24" fill="#3D4A5C"/>
+        </svg>
+      </div>
+    </div>
+    <div>
+      <p class="section-label reveal">Art Direction &amp; Visual System</p>
+      <h2 class="section-heading reveal reveal-delay-1">A visual language as precise and considered as the architecture itself.</h2>
+      <p class="section-body reveal reveal-delay-2">The challenge was to create a photography and art direction system that could hold its own alongside the work it was documenting. Architecture photography is a discipline in itself — it requires an understanding of light, proportion, and restraint that mirrors the design process.</p>
+      <p class="section-body reveal reveal-delay-3" style="margin-bottom:0;">I developed a shooting brief, post-processing language, and compositional grammar that became the foundation for all of Forma's visual output — from portfolio presentations to editorial features and award submissions.</p>
+    </div>
+  </div>
+
+  <!-- ── Full-width Banner ────────────────────────────────── -->
+  <div class="banner" id="bannerParallax">
+    <img
+      src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2000&q=80"
+      alt="Editorial, precise, and unapologetically minimal."
+      id="bannerImg" />
+    <div class="banner-overlay" style="background:linear-gradient(135deg, rgba(74,85,104,0.75) 0%, rgba(26,25,23,0.5) 100%);">
+      <p class="banner-text reveal">"Editorial, precise, and unapologetically minimal at every scale."</p>
+    </div>
+  </div>
+
+  <!-- ── Web Design ────────────────────────────────────────── -->
+  <div class="section-2col" style="max-width:1400px; margin:0 auto; padding: clamp(4rem,8vh,8rem) var(--pad);">
+    <div>
+      <p class="section-label reveal">Portfolio &amp; Digital Presence</p>
+      <h2 class="section-heading reveal reveal-delay-1">A portfolio that frames the work — not decorates it.</h2>
+      <p class="section-body reveal reveal-delay-2">The digital presence was built around a single principle: get out of the way of the work. A minimal grid system, generous whitespace, and a carefully considered type hierarchy let the architecture speak.</p>
+      <p class="section-body reveal reveal-delay-3">Project pages use full-bleed photography with restrained annotation. The navigation is near-invisible. Every interaction is deliberate. The result is a portfolio that feels less like a website and more like a curated exhibition.</p>
+      <a href="#" class="section-link reveal reveal-delay-4">View portfolio <span>→</span></a>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="guidelines-doc">
+        <div class="doc-body" style="padding:2rem;">
+          <div style="background:#4A5568; border-radius:6px; padding:1.5rem 1.8rem; margin-bottom:1.2rem; color:#fff;">
+            <div style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; opacity:0.7; margin-bottom:0.5rem;">Forma Studio</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400;">Selected<br/>Works 2023</div>
+          </div>
+          <div style="display:flex; gap:0.8rem; margin-bottom:1rem;">
+            <div style="flex:1; background:#F0EEE9; border-radius:4px; padding:0.8rem; font-size:0.72rem; color:#7A746D;">
+              <div style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:#B0AAA3; margin-bottom:0.3rem;">Projects</div>
+              12 Featured
+            </div>
+            <div style="flex:1; background:#F0EEE9; border-radius:4px; padding:0.8rem; font-size:0.72rem; color:#7A746D;">
+              <div style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:#B0AAA3; margin-bottom:0.3rem;">Awards</div>
+              3 Shortlisted
+            </div>
+          </div>
+          <div style="background:#3D4A5C; border-radius:4px; padding:0.8rem 1rem; color:#fff; font-size:0.75rem; text-align:center; letter-spacing:0.1em;">
+            View portfolio →
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Brand Pattern ─────────────────────────────────────── -->
+  <div class="section-wrap">
+    <div class="section-2col">
+      <div class="reveal">
+        <div class="pattern-block">
+          <!-- 20 tiles: alternating light/dark, some with icon -->
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+          <div class="pattern-tile light">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" stroke="#3D4A5C" stroke-width="1.5" fill="none"/><rect x="14" y="14" width="12" height="12" fill="#3D4A5C"/></svg>
+          </div>
+          <div class="pattern-tile"></div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="media-card" style="aspect-ratio:3/4; max-width:280px; margin:0 auto; position:relative;">
+          <img
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80"
+            alt="Forma Studio — project detail" style="width:100%;height:100%;object-fit:cover;" />
+          <div style="position:absolute; bottom:1rem; left:1rem; right:1rem; background:#fff; border-radius:6px; padding:0.7rem 1rem; display:flex; align-items:center; gap:0.7rem; box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+            <div style="width:28px;height:28px;background:#3D4A5C;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 40 40" width="14" height="14" fill="none"><rect x="10" y="10" width="20" height="20" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <div style="font-size:0.7rem; color:#1A1917; font-weight:400;">Casa Mínima</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Brand Guidelines ──────────────────────────────────── -->
+  <div class="section-2col" style="max-width:1400px; margin:0 auto; padding: clamp(4rem,8vh,8rem) var(--pad);">
+    <div class="reveal">
+      <div class="guidelines-doc">
+        <div class="doc-header">
+          <div class="doc-header-title">Brand Guidelines</div>
+          <div class="doc-header-sub">Forma Studio · 2023</div>
+        </div>
+        <div class="doc-body">
+          <div class="doc-row">
+            <div class="doc-swatch" style="background:#606D80;"></div>
+            <div class="doc-swatch" style="background:#4A5568;"></div>
+            <div class="doc-swatch" style="background:#F4F2EE;"></div>
+            <div class="doc-swatch" style="background:#1A1917;"></div>
+          </div>
+          <div class="doc-typo-row">
+            <div class="doc-typo-name">Primary — Cormorant Garamond</div>
+            <div class="doc-typo-sample">Aa Bb Cc</div>
+          </div>
+          <div class="doc-typo-row">
+            <div class="doc-typo-name">Secondary — DM Sans</div>
+            <div class="doc-typo-sample sans">Brand identity system</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label reveal">Brand Guidelines</p>
+      <h2 class="section-heading reveal reveal-delay-1">A visual system that brings order to complexity.</h2>
+      <p class="section-body reveal reveal-delay-2">The brand guide codifies Forma's visual principles — grid-based layouts, monochromatic photography, and precise typographic rules. Cool slate tones and geometric marks form the foundation.</p>
+      <p class="section-body reveal reveal-delay-3">The system is built around structure and restraint — a sans-serif wordmark, a muted cool palette, and strict compositional rules for all photography and presentation output.</p>
+      <a href="#" class="section-link reveal reveal-delay-4">View brand guidelines <span>→</span></a>
+    </div>
+  </div>
+
+  <!-- ── Closing Quote ─────────────────────────────────────── -->
+  <div style="border-top:1px solid var(--border);">
+    <div class="closing">
+      <p class="closing-quote reveal">"Architecture as a language — and every image, a carefully chosen word."</p>
+    </div>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <div style="border-top:1px solid var(--border);">
+    <footer>
+      <div class="footer-label">Art Direction · Photography · Editorial</div>
+      <div class="footer-tools">
+        <span class="footer-tool">Figma</span>
+        <span class="footer-tool">Photoshop</span>
+        <span class="footer-tool">Lightroom</span>
+        <span class="footer-tool">Illustrator</span>
+      </div>
+      <a href="index.html" class="footer-next">
+        Back to work <span>→</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // ── Cursor ────────────────────────────────────────────
+    (function() {
+      const cursor = document.getElementById('cursor');
+      const ring   = document.getElementById('cursorRing');
+      let mouseX = -100, mouseY = -100;
+      let ringX = -100, ringY = -100;
+
+      document.addEventListener('mousemove', e => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursor.style.left = mouseX + 'px';
+        cursor.style.top  = mouseY + 'px';
+      });
+
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        ring.style.left = ringX + 'px';
+        ring.style.top  = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => { cursor.classList.add('hovering'); ring.classList.add('hovering'); });
+        el.addEventListener('mouseleave', () => { cursor.classList.remove('hovering'); ring.classList.remove('hovering'); });
+      });
+    })();
+
+    // ── Scroll Progress ───────────────────────────────────
+    (function() {
+      const bar = document.getElementById('scrollProgress');
+      window.addEventListener('scroll', () => {
+        const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        bar.style.width = pct + '%';
+      }, { passive: true });
+    })();
+
+    // ── Reveal on Scroll ─────────────────────────────────
+    (function() {
+      const els = document.querySelectorAll('.reveal, .reveal-img');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+      els.forEach(el => obs.observe(el));
+    })();
+
+    // ── Banner Parallax ───────────────────────────────────
+    (function() {
+      const banner = document.getElementById('bannerParallax');
+      const img    = document.getElementById('bannerImg');
+      if (!banner || !img) return;
+
+      function update() {
+        const rect = banner.getBoundingClientRect();
+        const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+        const offset = (progress - 0.5) * 80;
+        img.style.transform = 'translateY(' + offset + 'px)';
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+
+    // ── Exit Transition ──────────────────────────────────
+    (function() {
+      document.querySelectorAll('a[href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http')) return;
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const cover = document.createElement('div');
+          cover.style.cssText = 'position:fixed;inset:0;background:#1A1917;z-index:9000;transform-origin:top;animation:exitCover .7s cubic-bezier(0.65,0,.35,1) forwards;';
+          document.head.insertAdjacentHTML('beforeend', '<style>@keyframes exitCover{0%{transform:scaleY(0)}100%{transform:scaleY(1)}}</style>');
+          document.body.appendChild(cover);
+          setTimeout(() => { window.location.href = href; }, 680);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
